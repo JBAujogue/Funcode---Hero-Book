@@ -1,0 +1,16 @@
+# python=3.8
+
+# pdf
+PyMuPDF
+
+# data
+numpy
+pandas
+openpyxl
+networkx
+
+# viz
+matplotlib
+notebook
+pyvis
+streamlit
