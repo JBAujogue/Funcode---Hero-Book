@@ -3,7 +3,7 @@
 
 
 requirements_gpu.txt
-data/plots/
+data/plots/*
 
 
 
