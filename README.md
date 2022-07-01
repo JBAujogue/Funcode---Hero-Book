@@ -1,4 +1,4 @@
-# Funcode-Hero-Book
+# Hero-Book
 
 
 This tiny project is a solver for Hero Books that are written in french (les _livres dont vous êtes le héros_).
