@@ -1,0 +1,9 @@
+*.ipynb_checkpoints
+*__pycache__
+
+
+requirements_gpu.txt
+data/plots/
+
+
+
