@@ -11,25 +11,29 @@ Solving the book then only amounts to finding the shortest path between the begi
 
 Create a conda environment named _herobook_: run in a conda shell 
 
-`conda create -n herobook`
-`conda activate herobook`
+- `conda create -n herobook`
+
+- `conda activate herobook`
 
 Install python and dependencies
 
-`conda install pip python=3.8`
-`cd path/to/Hero-Book`
-`pip install -r requirements.txt`
+- `conda install pip python=3.8`
+
+- `cd path/to/Hero-Book`
+
+- `pip install -r requirements.txt`
+
 
 
 ### 2. Usage
 
 Launch the jupyter notebook in order to inspect the analysis performed
 
-`jupyter notebook`
+- `jupyter notebook`
 
 Or launch the Streamlit browsing interface:
 
-`streamlit run app.py`
+- `streamlit run app.py`
 
 You can play with both using some pdfs found in `data/pdfs`.
 
