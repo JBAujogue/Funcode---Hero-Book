@@ -34,7 +34,7 @@ Launch the jupyter notebook in order to inspect the analysis performed
 
 Or launch the Streamlit browsing interface:
 
-- `streamlit run app.py`
+- `streamlit run streamlit/app.py`
 
 You can play with both using some pdfs found in `data/pdfs`.
 
