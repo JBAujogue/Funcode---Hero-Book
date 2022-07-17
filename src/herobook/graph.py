@@ -20,7 +20,7 @@ import pyvis.network as nt
 
 def build_nx_graph(episode_dict: dict):
     episode_ids = list(episode_dict.keys())
-    edges = [(i, j[0]) for i, d in episode_dict.items() for j in d['targets']]
+    edges = [(i, j) for i, d in episode_dict.items() for j in d['targets']]
     
     nx_graph = nx.DiGraph()
     nx_graph.add_nodes_from(episode_ids)
@@ -31,7 +31,7 @@ def build_nx_graph(episode_dict: dict):
 
 def build_nt_graph(episode_dict: dict, height = 1200, width = 1980, notebook = False):
     episode_ids = list(episode_dict.keys())
-    edges = [(i, j[0]) for i, d in episode_dict.items() for j in d['targets']]
+    edges = [(i, j) for i, d in episode_dict.items() for j in d['targets']]
     
     nt_graph = nt.Network(directed = True, height = height, width = width, notebook = notebook)
     nt_graph.add_nodes(

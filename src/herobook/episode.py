@@ -28,11 +28,15 @@ def get_episode_dict(text):
 
     # find episode texts
     for i, e1, e2 in zip(episode_ids, episode_idx, episode_idx[1:] + [len(lines)]):
-        episode_dict[i]['text'] = ''.join(lines[e1+1: e2]).strip()
+        ep_text = '\n'.join([l.strip() for l in lines[e1+1: e2]]).strip()
+        ep_text = re.sub('\n(\n)+', '. ', ep_text)
+        ep_text = re.sub('(\.)+', '.', ep_text)
+        ep_text = re.sub('(\n)+', ' ', ep_text)
+        episode_dict[i]['text'] = ep_text
 
     # find episode target ids
     for i in episode_dict:
-        episode_dict[i]['targets'] = find_target_ids_from_text(episode_dict[i]['text'])
+        episode_dict[i]['targets'] = find_targets_from_text(episode_dict[i]['text'])
 
     # find episode random events
     for i in episode_dict:
@@ -91,15 +95,24 @@ def find_episode_markers_from_lines(lines):
 
 
 
-def find_target_ids_from_text(text):
-    return [(int(m.group(1)),) + m.span(1) for m in re.finditer('au\s+([0-9]+)', text)]
+def find_targets_from_text(text):
+    # find target ids, along with their span in the input text
+    target_dict = {int(m.group(1)): {'span': m.span(1)} for m in re.finditer('au\s+([0-9]+)', text)}
 
+    # find sentence chunk associated to each target id
+    start_chars = [i.start() for i in re.finditer('\.', text)] + [t['span'][1] for t in target_dict.values()]
+    for t in target_dict:
+        span = target_dict[t]['span']
+        start_idx = max([0] + [i+1 for i in start_chars if i < span[0]])
+        sent = text[start_idx: span[1]].strip()
+        target_dict[t]['sentence'] = sent
+    return target_dict
 
 
 def find_fight_score_from_text(text):
     scores = [
         # tuple(int(e) for e in m.groups())
         m.groups()
-        for m in re.finditer('HABILETÉ[\s:;.]+([0-9]+)\s+ENDURANCE[\s:;.]+([0-9]+)', text)
+        for m in re.finditer('HABILETÉ[\s:;\.]+([0-9]+)\s+ENDURANCE[\s:;\.]+([0-9]+)', text)
     ]
     return (sum(int(sc[0]) for sc in scores), sum(int(sc[1]) for sc in scores))

@@ -94,7 +94,7 @@ def parse_page_df_text(page, precision = 4):
 
 
 
-def parse_df_text(doc, precision = 4):
+def parse_pdf_df_text(doc, precision = 4):
     doc_text = []
     # iterate over pages
     # list of methods for Page objects

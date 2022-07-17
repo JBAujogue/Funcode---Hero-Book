@@ -9,8 +9,13 @@ pandas
 openpyxl
 networkx
 
+# nlp
+spacy==3.2.*
+fr_dep_news_trf @ https://github.com/explosion/spacy-models/releases/download/fr_dep_news_trf-3.2.0/fr_dep_news_trf-3.2.0.tar.gz
+
 # viz
 matplotlib
 notebook
 pyvis
 streamlit
+tqdm

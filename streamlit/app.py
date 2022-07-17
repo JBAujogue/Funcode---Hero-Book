@@ -108,7 +108,7 @@ if st.session_state.nx_graph is not None:
 		st.subheader('Episode {}'.format(source))
 		st.write(episodes[source]['text'])
 		st.subheader('Next options')
-		st.write(' - '.join([str(i[0]) for i in episodes[source]['targets']]))
+		st.write(' - '.join([str(i) for i in episodes[source]['targets']]))
 	with col_graph:
 		radius = st.number_input(
 			label = 'Select an exploration radius:',
