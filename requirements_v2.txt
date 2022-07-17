@@ -1,0 +1,24 @@
+# python=3.9
+
+# pdf
+PyMuPDF
+
+# data
+numpy
+pandas
+openpyxl
+networkx
+
+# nlp
+spacy==3.2.*
+coreferee==1.2.*
+fr_core_news_lg @ https://github.com/explosion/spacy-models/releases/download/fr_core_news_md-3.2.0/fr_core_news_md-3.2.0.tar.gz
+fr_dep_news_trf @ https://github.com/explosion/spacy-models/releases/download/fr_dep_news_trf-3.2.0/fr_dep_news_trf-3.2.0.tar.gz
+coreferee-model-fr @ https://github.com/explosion/coreferee/raw/master/models/coreferee_model_fr.zip
+
+# viz
+matplotlib
+notebook
+pyvis
+streamlit
+tqdm
