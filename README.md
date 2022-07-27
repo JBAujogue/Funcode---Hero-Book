@@ -22,7 +22,7 @@ Install python and dependencies
 
 - `cd path/to/Hero-Book`
 
-- `pip install -r requirements.txt`
+- `pip install -r requirements_v1.txt`
 
 
 
