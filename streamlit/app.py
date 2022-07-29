@@ -98,7 +98,7 @@ if st.session_state.nx_graph is not None:
 
 	# browse book
 	st.subheader('Browse the book')
-	col_text, col_graph = st.columns([6, 4])
+	col_text, col_graph = st.columns(2)
 	with col_text:
 		source = st.number_input(
 			label = 'Select an episode:',
@@ -112,14 +112,15 @@ if st.session_state.nx_graph is not None:
 	with col_graph:
 		radius = st.number_input(
 			label = 'Select an exploration radius:',
+			value = 10,
 			min_value = 1,
-			max_value = 10,
+			max_value = 15,
 		)
 		lt_graph = nx.ego_graph(nx_graph, n = source, radius = radius)
 		nt_graph = convert_nx_to_nt_graph(
 			lt_graph, 
 			node_colors = {source: '#fa624b'},
-			height = '300pt',
+			height = '350pt',
 			width = '100%',
 		)
 		nt_graph.save_graph(path_to_html)
@@ -127,7 +128,7 @@ if st.session_state.nx_graph is not None:
 
 		st.write(' ')
 		st.write(' ')
-		components.html(html, height = 500)
+		components.html(html, height = 550)
 	
 
     
