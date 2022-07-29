@@ -13,10 +13,6 @@ pandas
 openpyxl
 networkx
 
-# nlu
-transformers
-sentencepiece
-
 # viz
 matplotlib
 notebook
