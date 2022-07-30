@@ -13,7 +13,8 @@ import streamlit as st
 import streamlit.components.v1 as components
 
 
-path_to_repo = os.path.dirname(os.getcwd())
+# path_to_repo = os.path.dirname(os.getcwd())
+path_to_repo = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 path_to_data = os.path.join(path_to_repo, 'data')
 path_to_pdfs = os.path.join(path_to_data, 'pdfs')
 path_to_src  = os.path.join(path_to_repo, 'src')
