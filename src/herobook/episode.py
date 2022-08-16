@@ -109,6 +109,7 @@ def find_targets_from_text(text):
     return target_dict
 
 
+
 def find_fight_score_from_text(text):
     scores = [
         # tuple(int(e) for e in m.groups())
