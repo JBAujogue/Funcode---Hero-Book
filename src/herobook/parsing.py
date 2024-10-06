@@ -1,36 +1,19 @@
-import os
-import sys
-from io import open, BytesIO
-import re
-
-# data
-import numpy as np
-
-# pdf
-import fitz # name of pymupdf
+from typing import Dict
+import pymupdf
 
 
+def parse_pdf_raw_text(file_path: str) -> str:
+    '''
+    Parse text contained in a pdf.
+    '''
+    return ''.join([page.get_text('text') for page in pymupdf.open(file_path)])
 
 
-
-#**********************************************************
-#*                       content                          *
-#**********************************************************
-
-def parse_pdf_raw_text(file_path):
-    doc = fitz.open(file_path)
-    text = [page.get_text('text') for page in doc]
-    text = ''.join(text)
-    return text
-
-
-
-def get_reordered_text(span, line_dir):
+def get_reordered_text(span: Dict[str, ], line_dir):
     chars = list(span['chars'])
-    chars.sort(key = lambda c: float(c['bbox'][0])*line_dir) #origin
+    chars.sort(key = lambda c: float(c['bbox'][0])*line_dir)
     text = ''.join([c['c'] for c in chars])
     return text
-
 
 
 def parse_page_df_text(page, precision = 4):

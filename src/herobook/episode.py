@@ -1,21 +1,11 @@
-
-import sys
-import os
-from io import open, BytesIO, StringIO
+from typing import Dict, List, Tuple
 import re
 
-# data
-import pandas as pd
 
-
-
-
-
-#**********************************************************
-#*                       content                          *
-#**********************************************************
-
-def get_episode_dict(text):
+def get_episode_dict(text: str) -> Dict[int, Dict[str, str]]:
+    '''
+    Convert a herobook plain text into a dict of episodes.
+    '''
     # split into lines
     lines = text.split('\n')
 
@@ -50,37 +40,12 @@ def get_episode_dict(text):
     return episode_dict
 
 
-
-def find_episode_markers_from_lines(lines):
-    # episode_ids = [m.group(1).strip() for m in re.finditer('\n+\s*([0-9]+)\s*\n+', text)]
-    # episode_ids = [
-    #     (i, int(t.strip())) 
-    #     for i, t in enumerate(text.split('\n')) 
-    #     if t.strip().isdigit()
-    # ]
-
-    # episode_markers = [
-    #     (i, int(p.strip()))
-    #     for i, p in enumerate(paragraphs)
-    #     if (not (' ' + ' '.join(paragraphs[:i]).strip())[-1].isalpha()
-    #         or (' ' + ' '.join(paragraphs[:i]).strip())[-1] in ['.', '!', '?', ',']
-    #     )
-    #     and p.strip().isdigit()
-    # ]
-    # episode_idx, episode_ids = [list(m) for m in zip(*episode_markers)]
-
-    # episode_markers = [
-    #     (i, int(p.strip()))
-    #     for i, p in enumerate(paragraphs)
-    #     if ((' ' + ' '.join(paragraphs[:i]).strip())[-1] in ['.', '!', '?', ','])
-    #     and p.strip().isdigit()
-    # ]
-    # episode_idx, episode_ids = [list(m) for m in zip(*episode_markers)]
-
+def find_episode_markers_from_lines(lines: List[str]) -> List[Tuple[int, int]]:
+    '''
+    Identify lines marking the beginning of an episode of a herobook.
+    '''
     episode_markers = [
-        (i, int(p.strip()))
-        for i, p in enumerate(lines)
-        if p.strip().isdigit()
+        (i, int(p.strip())) for i, p in enumerate(lines) if p.strip().isdigit()
     ]
     episode_markers = [
         mark for i, mark in enumerate(episode_markers)
@@ -94,8 +59,7 @@ def find_episode_markers_from_lines(lines):
     return episode_markers
 
 
-
-def find_targets_from_text(text):
+def find_targets_from_text(text: str) -> Dict[int, Dict[str, str]]:
     # find target ids, along with their span in the input text
     target_dict = {int(m.group(1)): {'span': m.span(1)} for m in re.finditer('au\s+([0-9]+)', text)}
 
@@ -109,10 +73,11 @@ def find_targets_from_text(text):
     return target_dict
 
 
-
-def find_fight_score_from_text(text):
+def find_fight_score_from_text(text: str) -> Tuple[int, int]:
+    '''
+    Find all occurences of HABILETÉ, ENDURANCE pairs in a given text.
+    '''
     scores = [
-        # tuple(int(e) for e in m.groups())
         m.groups()
         for m in re.finditer('HABILETÉ[\s:;\.]+([0-9]+)\s+ENDURANCE[\s:;\.]+([0-9]+)', text)
     ]
