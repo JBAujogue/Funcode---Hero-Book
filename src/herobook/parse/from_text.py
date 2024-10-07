@@ -2,7 +2,7 @@ from typing import Dict, List, Tuple
 import re
 
 
-def get_episode_dict(text: str) -> Dict[int, Dict[str, str]]:
+def parse_episodes_from_text(text: str) -> Dict[int, Dict[str, str]]:
     '''
     Convert a herobook plain text into a dict of episodes.
     '''
@@ -10,7 +10,7 @@ def get_episode_dict(text: str) -> Dict[int, Dict[str, str]]:
     lines = text.split('\n')
 
     # find episode markers
-    episode_markers = find_episode_markers_from_lines(lines)
+    episode_markers = parse_episode_markers_from_lines(lines)
     episode_idx, episode_ids = [list(m) for m in zip(*episode_markers)]
 
     # init episode_dict
@@ -26,7 +26,7 @@ def get_episode_dict(text: str) -> Dict[int, Dict[str, str]]:
 
     # find episode target ids
     for i in episode_dict:
-        episode_dict[i]['targets'] = find_targets_from_text(episode_dict[i]['text'])
+        episode_dict[i]['targets'] = parse_episode_targets_from_text(episode_dict[i]['text'])
 
     # find episode random events
     for i in episode_dict:
@@ -35,12 +35,12 @@ def get_episode_dict(text: str) -> Dict[int, Dict[str, str]]:
 
     # find episode fights
     for i in episode_dict:
-        episode_dict[i]['fight'] = find_fight_score_from_text(episode_dict[i]['text'])
+        episode_dict[i]['fight'] = parse_episode_fight_score_from_text(episode_dict[i]['text'])
 
     return episode_dict
 
 
-def find_episode_markers_from_lines(lines: List[str]) -> List[Tuple[int, int]]:
+def parse_episode_markers_from_lines(lines: List[str]) -> List[Tuple[int, int]]:
     '''
     Identify lines marking the beginning of an episode of a herobook.
     '''
@@ -59,7 +59,10 @@ def find_episode_markers_from_lines(lines: List[str]) -> List[Tuple[int, int]]:
     return episode_markers
 
 
-def find_targets_from_text(text: str) -> Dict[int, Dict[str, str]]:
+def parse_episode_targets_from_text(text: str) -> Dict[int, Dict[str, str]]:
+    '''
+    Find in a episode text the links towards next episodes.
+    '''
     # find target ids, along with their span in the input text
     target_dict = {int(m.group(1)): {'span': m.span(1)} for m in re.finditer('au\s+([0-9]+)', text)}
 
@@ -73,7 +76,7 @@ def find_targets_from_text(text: str) -> Dict[int, Dict[str, str]]:
     return target_dict
 
 
-def find_fight_score_from_text(text: str) -> Tuple[int, int]:
+def parse_episode_fight_score_from_text(text: str) -> Tuple[int, int]:
     '''
     Find all occurences of HABILETÉ, ENDURANCE pairs in a given text.
     '''

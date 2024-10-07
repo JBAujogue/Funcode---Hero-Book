@@ -1,19 +1,18 @@
-import os
+from typing import List, Dict, Tuple
+from pathlib import Path
 import pymupdf
 import networkx as nx
 
 import streamlit as st
 import streamlit.components.v1 as components
 
-from herobook.episode import get_episode_dict
-from herobook.graph import build_nx_graph, convert_nx_to_nt_graph
+from herobook.parse import parse_episodes_from_text
+from herobook.graph import build_nx_graph, build_nt_graph, convert_nx_to_nt_graph
 
 
-path_to_repo = os.path.dirname(os.path.abspath(__file__))
-path_to_data = os.path.join(path_to_repo, 'data')
-path_to_pdfs = os.path.join(path_to_data, 'pdfs')
-path_to_src  = os.path.join(path_to_repo, 'src')
-path_to_html = os.path.join(path_to_data, 'plots', 'streamlit_graph.html')
+path_to_repo = Path(__file__).parent.resolve()
+path_to_local_graph = path_to_repo / 'data' / 'plots' / 'local_graph.html'
+path_to_full_graph = path_to_repo / 'data' / 'plots' / 'full_graph.html'
 
 
 def init_session_state():
@@ -26,7 +25,7 @@ def init_session_state():
     return
 
 
-def solve_book(nx_graph, episodes):
+def solve_book(nx_graph: nx.DiGraph, episodes: Dict[int, Dict[str, str]]) -> Tuple:
     max_value = max(list(episodes.keys()))
     path = nx.shortest_path(nx_graph, source = 1, target = max_value)
     args = {arg: sum([
@@ -44,10 +43,14 @@ def process_book():
         text = ''.join([page.get_text('text') for page in doc])
 
     # find episode markers & text
-    episodes = get_episode_dict(text)
+    episodes = parse_episodes_from_text(text)
 
-    # build graph
+    # build graphs
     nx_graph = build_nx_graph(episodes)
+    nt_graph = build_nt_graph(episodes)
+    
+    # save graph as html
+    nt_graph.save_graph(str(path_to_full_graph))
 
     # solve book
     path, args = solve_book(nx_graph, episodes)
@@ -116,7 +119,7 @@ def app():
         with col_graph:
             radius = st.number_input(
                 label = 'Select an exploration radius:',
-                value = 10,
+                value = 3,
                 min_value = 1,
                 max_value = 15,
             )
@@ -127,8 +130,8 @@ def app():
                 height = '350pt',
                 width = '100%',
             )
-            nt_graph.save_graph(path_to_html)
-            html = open(path_to_html, 'r', encoding = 'utf-8').read()
+            nt_graph.save_graph(str(path_to_local_graph))
+            html = open(path_to_local_graph, 'r', encoding = 'utf-8').read()
 
             st.write(' ')
             st.write(' ')

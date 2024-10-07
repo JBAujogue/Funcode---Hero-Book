@@ -1,0 +1,2 @@
+from herobook.parse.from_text import parse_episodes_from_text
+from herobook.parse.from_doc import parse_episodes_from_doc
